@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         btnZero.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addOn("0", tvDisplay);
+                addOn("0", tvDisplay, equation);
             }
         });
 
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         btnOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addOn("1", tvDisplay);
+                addOn("1", tvDisplay, equation);
             }
         });
 
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         btnTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addOn("2", tvDisplay);
+                addOn("2", tvDisplay, equation);
             }
         });
 
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         btnThree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addOn("3", tvDisplay);
+                addOn("3", tvDisplay, equation);
             }
         });
 
@@ -117,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         btnFour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addOn("4", tvDisplay);
+                addOn("4", tvDisplay, equation);
             }
         });
 
@@ -128,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         btnFive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addOn("5", tvDisplay);
+                addOn("5", tvDisplay, equation);
             }
         });
 
@@ -139,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         btnSix.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addOn("6", tvDisplay);
+                addOn("6", tvDisplay, equation);
             }
         });
 
@@ -150,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         btnSeven.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addOn("7", tvDisplay);
+                addOn("7", tvDisplay, equation);
             }
         });
 
@@ -161,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
         btnEight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addOn("8", tvDisplay);
+                addOn("8", tvDisplay, equation);
             }
         });
 
@@ -172,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
         btnNine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addOn("9", tvDisplay);
+                addOn("9", tvDisplay, equation);
             }
         });
 
@@ -193,8 +194,6 @@ public class MainActivity extends AppCompatActivity {
                 isEquationSign = true;
                 equationSign = "";
                 numIsSelected = false;
-
-
             }
         });
 
@@ -277,9 +276,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String total = ""; //The value that is displayed on the textView
-
-                if (numIsSelected == true) {
-                    if (numbers != "") {
+                if (numIsSelected == true && !numbers.equals("-")) {
                         if (equalLoop == true && counterForLoop > 0) {
                             equation.add(equationSign); //Adds the equation sign(*, /, +, -) to the arraylist
                             equation.add(storedNum); //Adds the stored number from the numbers string
@@ -305,7 +302,6 @@ public class MainActivity extends AppCompatActivity {
                         tvDisplay.setText(total.replace("[", "").replace("]", ""));
                     }
                 }
-            }
         });
 
         /**
@@ -316,9 +312,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //As long as the number does not equal zero continue with the division
-                if(!numbers.equals("0"))
+                if(!numbers.equals("0") && !numbers.equals("") && !numbers.equals("-"))
                 {
-                    double percent = Double.parseDouble(numbers); //Turn the string into a double to be computed
+                    double percent = Double.parseDouble(tvDisplay.getText().toString()); //Turn the string into a double to be computed
                     percent /= 100; //Sets percent equal to itself / 100
                     numbers = "" + percent; //Adds that double number back into string format
                     tvDisplay.setText(numbers); //Displays that newly calclated number
@@ -334,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
         btnDecimal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addOn(".",tvDisplay);
+                addOn(".",tvDisplay, equation);
             }
         });
 
@@ -368,8 +364,9 @@ public class MainActivity extends AppCompatActivity {
      * @param addNum //The number the program should add
      * @param display //The textView so it can display the new number
      */
-    public void addOn(String addNum, TextView display)
+    public void addOn(String addNum, TextView display, ArrayList<String> equation)
     {
+
         switch(addNum) {
             case "0":
                 numbers += "0";
@@ -414,6 +411,13 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
+        /*if(check == true && !isSecondEquation && !equation.isEmpty())
+        {
+            //Attempt at stopping multiple equation being entered
+            equation.clear();
+            check = false;
+
+        }*/
 
         isSecondEquation = false; //Lets the program know that the user is just entering a new number
         equalLoop = false; //Since a new number is pressed, the code is now open to doing a loop
